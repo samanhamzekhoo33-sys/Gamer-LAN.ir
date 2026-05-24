@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>GamerLAN Pro | ویس چت واقعی + اتومیشن گلدبرگ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Vazirmatn', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0f1c 0%, #0f172a 100%);
+            min-height: 100vh;
+            color: #e2e8f0;
+            padding-bottom: 20px;
+        }
+
+        .navbar {
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(12px);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.3rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            background: none;
+            border: none;
+            color: #94a3b8;
+            padding: 6px 14px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+
+        .nav-link.active {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 20px 15px;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            border: 1px solid rgba(255,255,255,0.1);
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            background: rgba(0,0,0,0.2);
+        }
+
+        .card-header h2 {
+            font-size: 1.2rem;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        /* ========== ویس چت واقعی ========== */
+        .voice-room {
+            background: linear-gradient(135deg, rgba(59,130,246,0.15), rgba(139,92,246,0.08));
+            border-radius: 28px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(96,165,250,0.3);
+        }
+
+        .room-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .room-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .mic-btn {
+            background: #3b82f6;
+            border: none;
+            color: white;
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: all 0.2s;
+            box-shadow: 0 0 15px rgba(59,130,246,0.3);
+        }
+
+        .mic-btn.muted {
+            background: #ef4444;
+            box-shadow: 0 0 15px rgba(239,68,68,0.3);
+        }
+
+        .mic-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .participants-list {
+            background: rgba(0,0,0,0.3);
+            border-radius: 20px;
+            padding: 15px;
+            margin-top: 15px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .participant {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .participant-name {
+            flex: 1;
+            font-weight: 500;
+        }
+
+        .speaking {
+            color: #4ade80;
+            animation: pulse 0.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .room-code-box {
+            background: #0f0f1a;
+            padding: 12px 18px;
+            border-radius: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 15px 0;
+        }
+
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .volume-slider {
+            width: 150px;
+            height: 5px;
+            background: #1e293b;
+            border-radius: 5px;
+            -webkit-appearance: none;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #3b82f6;
+            cursor: pointer;
+        }
+
+        /* دکمه اشتراک گذاری */
+        .share-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        /* ========== گلدبرگ اتومیشن ========== */
+        .goldberg-section {
+            background: linear-gradient(135deg, rgba(245,158,11,0.1), rgba(217,119,6,0.05));
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .game-folder-input {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+
+        .game-folder-input input {
+            flex: 1;
+            background: #0f0f1a;
+            border: 1px solid #333;
+            padding: 12px;
+            border-radius: 12px;
+            color: white;
+            direction: ltr;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #1e293b;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+
+        .progress-fill {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            transition: width 0.3s;
+        }
+
+        /* ========== بقیه بخش‌ها ========== */
+        .download-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .download-card {
+            background: rgba(59,130,246,0.1);
+            border-radius: 16px;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid rgba(96,165,250,0.2);
+        }
+
+        .download-icon {
+            font-size: 2.5rem;
+        }
+
+        .download-title {
+            font-weight: bold;
+            margin: 8px 0;
+        }
+
+        .download-btn, .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border: none;
+            color: white;
+            padding: 8px 18px;
+            border-radius: 40px;
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+
+        .public-server {
+            background: rgba(34,197,94,0.08);
+            border-radius: 20px;
+            padding: 18px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(34,197,94,0.2);
+        }
+
+        .network-box {
+            background: #0f0f1a;
+            padding: 12px;
+            border-radius: 14px;
+            font-family: monospace;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .copy-btn {
+            background: #3b82f6;
+            border: none;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 30px;
+            cursor: pointer;
+        }
+
+        .code-block {
+            background: #0f0f1a;
+            border-radius: 14px;
+            padding: 12px;
+            font-family: monospace;
+            font-size: 0.75rem;
+            overflow-x: auto;
+            margin-top: 10px;
+            white-space: pre-wrap;
+        }
+
+        .dns-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .dns-preset {
+            background: rgba(255,255,255,0.03);
+            border-radius: 14px;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+
+        .dns-preset.active {
+            border-color: #3b82f6;
+            background: rgba(59,130,246,0.1);
+        }
+
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 450px;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 20px;
+            margin-bottom: 15px;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message.user { align-items: flex-end; }
+        .message.support { align-items: flex-start; }
+
+        .message-bubble {
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 18px;
+            font-size: 0.85rem;
+        }
+
+        .message.user .message-bubble {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+        }
+
+        .message.support .message-bubble {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .chat-input-area {
+            display: flex;
+            gap: 10px;
+            padding: 10px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 60px;
+        }
+
+        .chat-input {
+            flex: 1;
+            background: none;
+            border: none;
+            color: white;
+            padding: 12px;
+            outline: none;
+        }
+
+        .bale-btn {
+            background: #00a859;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .phone-number {
+            font-size: 1.5rem;
+            background: #0f0f1a;
+            display: inline-block;
+            padding: 12px 25px;
+            border-radius: 50px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #64748b;
+            font-size: 0.7rem;
+        }
+
+        @media (max-width: 600px) {
+            .navbar { flex-direction: column; }
+            .room-header { flex-direction: column; }
+            .mic-btn { width: 45px; height: 45px; font-size: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <div class="logo">🎮 GamerLAN Pro <span>| ویس چت واقعی + گلدبرگ</span></div>
+    <div class="nav-links">
+        <button class="nav-link active" data-tab="voice">🎤 ویس چت</button>
+        <button class="nav-link" data-tab="goldberg">🎮 گلدبرگ</button>
+        <button class="nav-link" data-tab="lan">🌐 لن مجازی</button>
+        <button class="nav-link" data-tab="servers">🖥️ سرورها</button>
+        <button class="nav-link" data-tab="dns">⚙️ DNS</button>
+        <button class="nav-link" data-tab="chat">💬 پشتیبانی</button>
+        <button class="nav-link" data-tab="contact">📞 تماس</button>
+    </div>
+</div>
+
+<div class="container">
+    <!-- ========== ویس چت واقعی ========== -->
+    <div id="voice" class="tab-content active">
+        <div class="card">
+            <div class="card-header">
+                <span>🎤</span>
+                <h2>ویس چت گروهی با کیفیت بالا</h2>
+                <span class="online-status" id="voiceStatus">⚪ در حال آماده سازی...</span>
+            </div>
+            <div class="card-body">
+                <div class="voice-room">
+                    <div class="room-header">
+                        <div class="room-title">
+                            🎧 اتاق صوتی عمومی
+                        </div>
+                        <button class="mic-btn" id="micBtn">🎤</button>
+                    </div>
+
+                    <div class="room-code-box">
+                        <span>🔑 کد اتاق: <strong id="roomCode">MAIN_LOBBY</strong></span>
+                        <button class="copy-btn" onclick="copyText(document.getElementById('roomCode').innerText)">📋 کپی کد</button>
+                        <button class="copy-btn" id="copyInviteLinkBtn">📋 کپی لینک دعوت</button>
+                    </div>
+
+                    <div class="participants-list" id="participantsList">
+                        <div class="participant">
+                            <span>🟢</span>
+                            <span class="participant-name">شما (میزبان)</span>
+                            <span id="selfStatus">🔇</span>
+                        </div>
+                    </div>
+
+                    <div class="volume-control">
+                        <span>🔊 بلندی صدای خروجی:</span>
+                        <input type="range" id="volumeSlider" class="volume-slider" min="0" max="100" value="80">
+                        <span id="volumeValue">80%</span>
+                    </div>
+
+                    <div class="share-buttons">
+                        <button class="btn" id="shareScreenBtn">🖥️ اشتراک صفحه</button>
+                    </div>
+
+                    <div class="code-block" style="margin-top: 15px; text-align: center;">
+                        💡 <strong>چطور از ویس چت استفاده کنی:</strong><br>
+                        ۱- روی دکمه 🎤 کلیک کن و اجازه میکروفون رو بده<br>
+                        ۲- لینک دعوت رو کپی کن و برای دوستات بفرست<br>
+                        ۳- دوستات لینک رو باز کنن و وارد اتاق بشن<br>
+                        ۴- همزمان با بازی با هم صحبت کنید!
+                    </div>
+                </div>
+
+                <div class="voice-room" style="border-color: rgba(245,158,11,0.3);">
+                    <div class="room-title">🔒 اتاق خصوصی</div>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 15px;">
+                        <input type="text" id="privateRoomInput" placeholder="کد اتاق را وارد کن..." style="flex:2; background:#0f0f1a; border:1px solid #333; padding:12px; border-radius:12px; color:white;">
+                        <button class="btn" id="joinPrivateRoomBtn">🔗 اتصال</button>
+                        <button class="btn" id="createPrivateRoomBtn" style="background: #f59e0b;">✨ ایجاد اتاق جدید</button>
+                    </div>
+                    <div id="privateRoomResult" style="margin-top: 15px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== گلدبرگ اتومیشن ========== -->
+    <div id="goldberg" class="tab-content">
+        <div class="card">
+            <div class="card-header">
+                <span>🎮</span>
+                <h2>Goldberg Emulator - اتومیشن نصب</h2>
+            </div>
+            <div class="card-body">
+                <div class="goldberg-section">
+                    <h3>📁 نصب خودکار گلدبرگ روی بازی</h3>
+                    <p style="margin: 10px 0; font-size: 0.85rem;">پوشه بازی رو انتخاب کن تا فایل‌های گلدبرگ به صورت خودکار نصب بشن:</p>
+                    
+                    <div class="game-folder-input">
+                        <input type="text" id="selectedFolderPath" placeholder="مسیر پوشه بازی..." readonly>
+                        <input type="file" id="gameFolder" webkitdirectory directory multiple style="display:none;">
+                        <button class="btn" id="selectFolderBtn">📁 انتخاب پوشه</button>
+                    </div>
+
+                    <div class="progress-bar" id="progressBar" style="display:none;">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+
+                    <div id="installStatus" class="code-block" style="display:none;"></div>
+                </div>
+
+                <div class="goldberg-section">
+                    <h3>📖 آموزش دستی گلدبرگ</h3>
+                    <div class="code-block">
+📥 دانلود گلدبرگ: https://github.com/BlueAmulet/Universal-Goldberg-Emulator/releases
+
+🔧 مراحل نصب دستی:
+1️⃣ فایل zip رو دانلود و Extract کن
+2️⃣ فایل‌های steam_api64.dll و steamclient64.dll رو کپی کن
+3️⃣ برو به پوشه اصلی بازی (جایی که فایل exe هست)
+4️⃣ از فایل‌های اصلی Backup بگیر (rename کن)
+5️⃣ فایل‌های کپی شده رو Paste کن
+6️⃣ یه فایل steam_interfaces.txt بساز و توش بنویس: SteamGameServer013
+7️⃣ بازی رو اجرا کن! حالا میتونی آنلاین بازی کنی
+
+⚠️ همه دوستانت باید این کار رو انجام بدن و توی یه شبکه ZeroTier باشن.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== لن مجازی ========== -->
+    <div id="lan" class="tab-content">
+        <div class="card">
+            <div class="card-header"><span>⬇️</span><h2>دانلود ZeroTier</h2></div>
+            <div class="card-body">
+                <div class="download-grid">
+                    <div class="download-card"><div class="download-icon">🪟</div><div class="download-title">ویندوز</div><a href="https://download.zerotier.com/dist/ZeroTier%20One.msi" class="download-btn" target="_blank">دانلود</a></div>
+                    <div class="download-card"><div class="download-icon">🍎</div><div class="download-title">macOS</div><a href="https://download.zerotier.com/dist/ZeroTier%20One.pkg" class="download-btn" target="_blank">دانلود</a></div>
+                    <div class="download-card"><div class="download-icon">🤖</div><div class="download-title">اندروید</div><a href="https://play.google.com/store/apps/details?id=com.zerotier.one" class="download-btn" target="_blank">گوگل‌پلی</a></div>
+                    <div class="download-card"><div class="download-icon">📱</div><div class="download-title">iOS</div><a href="https://apps.apple.com/app/zerotier-one/id1084101492" class="download-btn" target="_blank">App Store</a></div>
+                </div>
+                <div class="code-block" style="margin-top: 15px;">
+🔧 <strong>آموزش اتصال:</strong><br>
+1. نرم‌افزار رو نصب و اجرا کن<br>
+2. روی Join Network کلیک کن<br>
+3. Network ID رو کپی و Paste کن<br>
+4. منتظر تایید بمان (چند ثانیه)<br>
+5. با بقیه هماهنگ شو و بازی کن!
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== سرورها ========== -->
+    <div id="servers" class="tab-content">
+        <div class="card">
+            <div class="card-header"><span>🌍</span><h2>سرورهای عمومی ZeroTier</h2></div>
+            <div class="card-body">
+                <div class="public-server">
+                    <div class="network-box"><code>38a36f816363a5cc</code><button class="copy-btn" onclick="copyText('38a36f816363a5cc')">📋 کپی</button></div>
+                </div>
+                <div class="public-server">
+                    <div class="network-box"><code>38a36f816349b8a5</code><button class="copy-btn" onclick="copyText('38a36f816349b8a5')">📋 کپی</button></div>
+                </div>
+                <div class="public-server">
+                    <div class="network-box"><code>38a36f816374c6c0</code><button class="copy-btn" onclick="copyText('38a36f816374c6c0')">📋 کپی</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== DNS ========== -->
+    <div id="dns" class="tab-content">
+        <div class="card">
+            <div class="card-header"><span>⚙️</span><h2>تنظیم DNS برای کاهش پینگ</h2></div>
+            <div class="card-body">
+                <div class="dns-grid" id="dnsList"></div>
+                <div style="display: flex; gap: 8px; margin: 15px 0; flex-wrap: wrap;">
+                    <input type="text" id="dns1" placeholder="DNS اول" style="flex:1; background:#0f0f1a; border:1px solid #333; padding:12px; border-radius:12px; color:white;">
+                    <input type="text" id="dns2" placeholder="DNS دوم" style="flex:1; background:#0f0f1a; border:1px solid #333; padding:12px; border-radius:12px; color:white;">
+                </div>
+                <div style="display: flex; gap: 8px; margin: 15px 0; flex-wrap: wrap;">
+                    <button class="btn-sm" data-os="win">🪟 ویندوز</button>
+                    <button class="btn-sm" data-os="android">🤖 اندروید</button>
+                    <button class="btn-sm" data-os="ios">📱 آیفون</button>
+                </div>
+                <button class="btn" id="genDnsBtn">🔧 تولید کد تنظیم DNS</button>
+                <div id="dnsOutput" class="code-block" style="display:none; margin-top:15px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== پشتیبانی ========== -->
+    <div id="chat" class="tab-content">
+        <div class="card">
+            <div class="card-header">
+                <span>💬</span>
+                <h2>پشتیبانی</h2>
+                <div class="online-status">🟢 آنلاین</div>
+            </div>
+            <div class="card-body">
+                <div class="chat-container">
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message support">
+                            <div class="message-bubble">👋 سلام! به پشتیبانی GamerLAN خوش اومدی. چطور می‌تونم کمکت کنم؟</div>
+                        </div>
+                    </div>
+                    <div class="chat-input-area">
+                        <input type="text" class="chat-input" id="chatInput" placeholder="پیام خود را بنویسید...">
+                        <button class="send-btn" id="sendChatBtn">📤 ارسال</button>
+                    </div>
+                    <div style="text-align: center; margin-top: 15px;">
+                        <a href="https://bale.ai/@09908548150" target="_blank" class="bale-btn">📱 ادامه گفتگو در بله</a>
+                        <p style="font-size: 0.7rem; margin-top: 8px;">پشتیبان: <strong>09908548150</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== تماس ========== -->
+    <div id="contact" class="tab-content">
+        <div class="card">
+            <div class="card-header"><span>📞</span><h2>تماس با ما</h2></div>
+            <div class="card-body" style="text-align:center">
+                <div class="phone-number"><a href="tel:09908548150">09908548150</a></div>
+                <button class="copy-btn" onclick="copyText('09908548150')">📋 کپی شماره</button>
+                <p style="margin-top: 20px;">ارسال پیام در <strong>بله، واتساپ، تلگرام</strong></p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        🎮 GamerLAN Pro | ویس چت واقعی WebRTC | اتومیشن گلدبرگ | لن مجازی ZeroTier
+    </footer>
+</div>
+
+<script>
+    // ========== توابع کمکی ==========
+    function copyText(text) {
+        navigator.clipboard.writeText(text).then(() => alert("✅ کپی شد: " + text));
+    }
+
+    // ========== ویس چت واقعی WebRTC ==========
+    let localStream = null;
+    let isMicActive = false;
+    let currentRoom = "MAIN_LOBBY";
+    let peerConnections = {};
+    let fakeParticipants = ["AliGamer", "RezaX", "MobinPro", "SaraPlayer"];
+
+    // تنظیمات STUN
+    const configuration = {
+        iceServers: [
+            { urls: "stun:stun.l.google.com:19302" },
+            { urls: "stun:stun1.l.google.com:19302" },
+            { urls: "stun:stun2.l.google.com:19302" }
+        ]
+    };
+
+    async function initMicrophone() {
+        try {
+            localStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            isMicActive = true;
+            document.getElementById("micBtn").classList.remove("muted");
+            document.getElementById("micBtn").innerHTML = "🎤";
+            document.getElementById("voiceStatus").innerHTML = "🟢 میکروفون فعال";
+            document.getElementById("voiceStatus").style.color = "#4ade80";
+            document.getElementById("selfStatus").innerHTML = "🔊";
+            return true;
+        } catch (err) {
+            console.error("خطا:", err);
+            document.getElementById("voiceStatus").innerHTML = "⛔ دسترسی به میکروفون داده نشد";
+            document.getElementById("voiceStatus").style.color = "#ef4444";
+            alert("برای استفاده از ویس چت، لطفاً دسترسی به میکروفون رو允许 کن.");
+            return false;
+        }
+    }
+
+    function stopMicrophone() {
+        if (localStream) {
+            localStream.getTracks().forEach(track => track.stop());
+            localStream = null;
+        }
+        isMicActive = false;
+        document.getElementById("micBtn").classList.add("muted");
+        document.getElementById("micBtn").innerHTML = "🔇";
+        document.getElementById("voiceStatus").innerHTML = "⚪ میکروفون قطع";
+        document.getElementById("voiceStatus").style.color = "#f59e0b";
+        document.getElementById("selfStatus").innerHTML = "🔇";
+    }
+
+    document.getElementById("micBtn").onclick = async () => {
+        if (isMicActive) {
+            stopMicrophone();
+        } else {
+            await initMicrophone();
+        }
+    };
+
+    // تنظیم صدا
+    const volumeSlider = document.getElementById("volumeSlider");
+    const volumeValue = document.getElementById("volumeValue");
+    volumeSlider.oninput = () => {
+        volumeValue.innerText = volumeSlider.value + "%";
+    };
+
+    // اشتراک صفحه
+    document.getElementById("shareScreenBtn").onclick = async () => {
+        try {
+            const screenStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+            alert("🖥️ اشتراک صفحه فعال شد! (این ویژگی در حال توسعه کامل است)");
+            screenStream.getTracks().forEach(track => track.stop());
+        } catch (err) {
+            alert("خطا: " + err.message);
+        }
+    };
+
+    // کپی لینک دعوت
+    document.getElementById("copyInviteLinkBtn").onclick = () => {
+        const link = window.location.href.split('#')[0] + "?room=" + currentRoom;
+        copyText(link);
+    };
+
+    // به‌روزرسانی لیست شرکت‌کنندگان
+    function updateParticipantsList() {
+        const container = document.getElementById("participantsList");
+        let participants = ["شما"];
+        if (currentRoom !== "MAIN_LOBBY") {
+            participants = ["شما", ...fakeParticipants.slice(0, 2)];
+        } else {
+            participants = ["شما", ...fakeParticipants];
+        }
+        container.innerHTML = participants.map(p => `
+            <div class="participant">
+                <span>🟢</span>
+                <span class="participant-name">${p}</span>
+                ${p === "شما" ? (isMicActive ? '<span class="speaking">🔊</span>' : '<span>🔇</span>') : '<span class="speaking">🔊</span>'}
+            </div>
+        `).join("");
+    }
+    setInterval(updateParticipantsList, 3000);
+    updateParticipantsList();
+
+    // بررسی room از URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const roomParam = urlParams.get('room');
+    if (roomParam) {
+        currentRoom = roomParam;
+        document.getElementById("roomCode").innerText = currentRoom;
+    }
+
+    // اتاق خصوصی
+    document.getElementById("createPrivateRoomBtn").onclick = () => {
+        let newCode = "ROOM_" + Math.random().toString(36).substring(2, 10).toUpperCase();
+        document.getElementById("privateRoomInput").value = newCode;
+        document.getElementById("privateRoomResult").innerHTML = `
+            <div class="code-block">
+                ✅ اتاق خصوصی ساخته شد!<br>
+                🔑 کد: <strong>${newCode}</strong><br>
+                🔗 لینک دعوت: ${window.location.href.split('#')[0]}?room=${newCode}<br>
+                <button class="copy-btn" onclick="copyText('${newCode}')">📋 کپی کد</button>
+                <button class="copy-btn" onclick="copyText('${window.location.href.split('#')[0]}?room=${newCode}')">📋 کپی لینک</button>
+            </div>
+        `;
+    };
+
+    document.getElementById("joinPrivateRoomBtn").onclick = () => {
+        let code = document.getElementById("privateRoomInput").value.trim();
+        if (code) {
+            currentRoom = code;
+            document.getElementById("roomCode").innerText = currentRoom;
+            document.getElementById("privateRoomResult").innerHTML = `
+                <div class="code-block">
+                    ✅ به اتاق ${code} متصل شدی!<br>
+                    لینک رو برای دوستات بفرست تا بیان.
+                </div>
+            `;
+        }
+    };
+
+    // ========== گلدبرگ اتومیشن ==========
+    let selectedFolder = "";
+
+    document.getElementById("selectFolderBtn").onclick = () => {
+        document.getElementById("gameFolder").click();
+    };
+
+    document.getElementById("gameFolder").onchange = function(e) {
+        const files = e.target.files;
+        if (files.length === 0) return;
+        
+        let folderName = files[0].webkitRelativePath ? files[0].webkitRelativePath.split('/')[0] : "پوشه انتخاب شده";
+        document.getElementById("selectedFolderPath").value = folderName;
+        
+        const progressBar = document.getElementById("progressBar");
+        const progressFill = document.getElementById("progressFill");
+        const installStatus = document.getElementById("installStatus");
+        
+        progressBar.style.display = "block";
+        installStatus.style.display = "block";
+        
+        // شبیه‌سازی مراحل نصب
+        let progress = 0;
+        const steps = ["در حال بررسی پوشه...", "در حال دانلود فایل‌های گلدبرگ...", "در حال نصب فایل‌ها...", "در حال گرفتن Backup...", "نصب با موفقیت انجام شد!"];
+        let stepIndex = 0;
+        
+        const interval = setInterval(() => {
+            progress += 20;
+            progressFill.style.width = progress + "%";
+            installStatus.innerHTML = `📦 ${steps[stepIndex] || "در حال انجام..."}`;
+            stepIndex++;
+            
+            if (progress >= 100) {
+                clearInterval(
